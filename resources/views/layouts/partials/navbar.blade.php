@@ -28,14 +28,20 @@
                 {{Auth::user()->name}}
             </a>          
           <ul class="dropdown-menu">
-            <li><form method="POST" action="{{ route('logout') }}">
+            <li><a class="dropdown-item" href="{{ route('home') }}">Home</a></li>
+            @if (Auth::user()->role == 'admin')
+              <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}">Admin Dashboard</a></li>
+            @endif
+            <li>
+              <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <a href="route('logout')"
                             onclick="event.preventDefault();
                                         this.closest('form').submit();">
                         {{ __('Log Out') }}
-                    </a>
-                </form></li>
+                    </a>                
+              </form>
+            </li>
             <!-- <li><a class="dropdown-item" href="#">Another action</a></li>
             <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item" href="#">Something else here</a></li> -->
