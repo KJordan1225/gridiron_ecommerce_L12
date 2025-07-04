@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('slug');
             $table->mediumText('description');
             $table->string('status');
-            $table->boolean('popular');
-            $table->string('image');
+            $table->boolean('popular')->default(false);
+            $table->string('image')->nullable();
             $table->string('meta_title');
             $table->mediumText('meta_description');
             $table->mediumText('meta_keyword');
