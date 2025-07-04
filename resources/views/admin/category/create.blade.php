@@ -35,7 +35,7 @@
                 <div class="col-md-6">
                     <label for="">Status</label>
                     <select name="status" class="form-select">
-                        <option value=""> -- Select Status --</option>
+                        <option value="">-- Select Status --</option>
                         <option value="0">Show</option>
                         <option value="1">Hide</option>
                     </select>
