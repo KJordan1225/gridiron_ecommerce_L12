@@ -11,7 +11,8 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        return view('admin.category.index');
+        $categories = Category::get();
+        return view('admin.category.index', compact('categories'));
     }
 
     public function create()
@@ -31,12 +32,43 @@ class CategoryController extends Controller
             $path = 'uploads/category/';
             $file->move($path, $filename);
 
-            $data['image'] = $filename;
+            $data['image'] = $path . $filename;
         }
 
         Category::create($data);
 
         return redirect('/admin/categories')->with('status', 'Category Created');
 
+    }
+
+    public function edit(Category $category)
+    {
+        return view('admin.category.edit', compact('category'));
+    }
+
+    public function update(CategoryFormRequest $request, Category $category)
+    {
+        $data = $request->validated();
+
+        if($request->hasFile('image')) {
+            $file = $request->file('image');
+            $imgExt = $file->getClientOriginalExtension();
+
+            $filename = time().'.' . $imgExt;
+            $path = 'uploads/category/';
+            $file->move($path, $filename);
+
+            $data['image'] = $filename;
+        }
+
+        $category->update($data);
+
+        return redirect('/admin/categories')->with('status', 'Category Updated');
+    }
+
+    public function destroy(Category $category)
+    {
+        $category->delete();
+        return redirect('/admin/categories')->with('status', 'Category Deleted');
     }
 }
