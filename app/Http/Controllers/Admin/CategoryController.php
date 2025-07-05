@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\File;
 use App\Http\Requests\CategoryFormRequest;
 
 class CategoryController extends Controller
@@ -46,11 +47,16 @@ class CategoryController extends Controller
         return view('admin.category.edit', compact('category'));
     }
 
-    public function update(CategoryFormRequest $request, Category $category)
+    public function update (CategoryFormRequest $request, Category $category)
     {
         $data = $request->validated();
 
         if($request->hasFile('image')) {
+        
+            if (File::exists($category->image)){
+                File::delete($category->image); //import class
+            }
+            
             $file = $request->file('image');
             $imgExt = $file->getClientOriginalExtension();
 
@@ -58,17 +64,23 @@ class CategoryController extends Controller
             $path = 'uploads/category/';
             $file->move($path, $filename);
 
-            $data['image'] = $filename;
+            $data['image'] = $path . $filename;
         }
 
         $category->update($data);
 
         return redirect('/admin/categories')->with('status', 'Category Updated');
+
     }
 
     public function destroy(Category $category)
     {
         $category->delete();
         return redirect('/admin/categories')->with('status', 'Category Deleted');
+    }
+
+    public function show (Category $category)
+    {
+        return view('admin.category.show', compact('category'));
     }
 }

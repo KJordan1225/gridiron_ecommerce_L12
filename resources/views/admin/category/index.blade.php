@@ -9,6 +9,11 @@
             <a href="{{ url('admin/categories/create') }}" class="btn btn-primary float-end">Add Category</a>
         </h4>
     </div>
+
+    @session ('status')
+        <div class="alert alert-success">{{ session('status') }}</div>
+    @endsession
+    
     <div class="card-body">
         
         <table class="table table-bordered table-striped">
